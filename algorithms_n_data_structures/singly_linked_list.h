@@ -16,7 +16,7 @@ class singly_linked_list
 public:
 	singly_linked_list();
 	~singly_linked_list();
-	SNode<T> PushFront(T);
+	SNode<T>* PushFront(T);
 	SNode<T> PushBack(T);
 	T PopFront();
 	T PopBack();
@@ -45,9 +45,9 @@ singly_linked_list<T>::~singly_linked_list()
 }
 
 template<class T>
-SNode<T> singly_linked_list<T>::PushFront(T key) {
-	SNode<T> node = SNode<T>(key, head);
-	head = &node;
+SNode<T>* singly_linked_list<T>::PushFront(T key) {
+	SNode<T>* node = new SNode<T>(key, head);
+	head = node;
 	if (tail == nullptr)
 		tail = head;
 	return node;
