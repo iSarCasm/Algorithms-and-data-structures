@@ -27,6 +27,9 @@
     <ClInclude Include="singly_linked_list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="singly_linked_list_tests.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
