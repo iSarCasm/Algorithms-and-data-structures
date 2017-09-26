@@ -1,7 +1,6 @@
 // algorithms_n_data_structures.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
 #include <iostream>
 #include <assert.h>
 
@@ -9,9 +8,10 @@
 
 using namespace std;
 
-int _tmain(int argc, _TCHAR* argv[])
-{
-	SinglyLinkedListTests::Run();
+int main() {
+	bool with_time = true;
+
+	SinglyLinkedListTests::Run(with_time);
+
 	return 0;
 }
-

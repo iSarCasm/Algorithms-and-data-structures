@@ -11,6 +11,12 @@ struct SNode {
 };
 
 template<class T>
+struct SearchResult {
+	T value;
+	bool found;
+};
+
+template<class T>
 class singly_linked_list
 {
 public:
@@ -20,13 +26,14 @@ public:
 	SNode<T>* PushBack(T);
 	T PopFront();
 	T PopBack();
-	//T GetFront();
-	//T GetBack();
-	//SNode<T>* Search(T);
-	//bool Remove(T);
-	//void Clear();
-	SNode<T>* InsertBefore(SNode<T>* node, T value);
-	SNode<T>* InsertAfter(SNode<T>* node, T value);
+	T GetFront();
+	T GetBack();
+	SearchResult<SNode<T>*> Search(T);
+	bool Remove(T);
+	bool RemoveNode(SNode<T>*);
+	void Clear();
+	SNode<T>* InsertBefore(SNode<T>*, T);
+	SNode<T>* InsertAfter(SNode<T>*, T);
 	bool Empty();
 private:
 	SNode<T>* head;
@@ -107,10 +114,81 @@ T singly_linked_list<T>::PopFront() {
 template<class T>
 T singly_linked_list<T>::PopBack() {
 	T key = tail->value;
-	tail = head;
-	while (tail->next != nullptr)
-		tail = tail->next;
+	SNode<T>* prev = head;
+	// O(n)
+	while (tail != head && prev->next != tail)
+		prev = prev->next;
+	delete tail;
+	tail = prev;
+	prev->next = nullptr;
 	return key;
+}
+
+template<class T>
+bool singly_linked_list<T>::RemoveNode(SNode<T>* node) {
+	SNode<T>* next_node = node->next;
+	SNode<T>* prev_node = head;
+	// the O(n) stuff
+	while (prev_node->next != node && prev_node->next != nullptr)
+		prev_node = prev_node->next;
+	
+	if (prev_node->next == node) {
+		prev_node->next = next_node;
+		delete node;
+		return true;
+	}
+	else {
+		return false; // Node not from this List
+	}
+}
+
+template<class T>
+T singly_linked_list<T>::GetFront() {
+	T key = head->value;
+	return key;
+}
+
+template<class T>
+T singly_linked_list<T>::GetBack() {
+	T key = tail->value;
+	return key;
+}
+
+template<class T>
+void singly_linked_list<T>::Clear() {
+	while (!Empty())
+		PopFront();
+}
+
+template<class T>
+SearchResult<SNode<T>*> singly_linked_list<T>::Search(T key) {
+	SearchResult<SNode<T>*> result;
+	result.found = false;
+
+	if (!Empty()) {
+		SNode<T>* current = head;
+		while (current != nullptr) {
+			if (current->value == key) {
+				result.value = current;
+				result.found = true;
+				break;
+			}
+			current = current->next;
+		}
+	}
+	return result;
+}
+
+template<class T>
+bool singly_linked_list<T>::Remove(T key) {
+	SearchResult<SNode<T>*> s = Search(key);
+	if (s.found) {
+		return RemoveNode(s.value);
+	}
+	else {
+		return false;
+	}
+
 }
 
 template<class T>
